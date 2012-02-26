@@ -3,7 +3,7 @@ require "linecache19/version"
 
 Gem::Specification.new do |s|
   s.name = %q{linecache19}
-  s.version = LineCache::Version::STRING
+  s.version = '0.5.13'
   s.authors = ["R. Bernstein", "Mark Moseley", "Kevin Burge"]
   s.email = %q{kcburge@gmail.com}
   s.homepage    = "https://github.com/kcburge/linecache"
