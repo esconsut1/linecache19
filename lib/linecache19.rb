@@ -23,8 +23,6 @@
 #
 # = linecache
 # A module to read and cache lines of a Ruby program. 
-# == Version
-# :include:VERSION
 
 # == SYNOPSIS
 #
