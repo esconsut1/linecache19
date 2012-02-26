@@ -42,4 +42,6 @@ example in a debugger where the same lines are shown many times.
     "test/test-tracelines.rb"
     ]
   s.extensions << "ext/trace_nums/extconf.rb"
+
+  s.add_development_dependency("rake-compiler")
 end
