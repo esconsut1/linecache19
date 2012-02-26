@@ -1,46 +1,26 @@
-#!/usr/bin/env rake
-# -*- Ruby -*-
-require 'rubygems'
-require 'rake/rdoctask'
+require "bundler/gem_helper"
 require 'rake/testtask'
 require 'rake/extensiontask'
-require 'linecache19'
 
-Rake::ExtensionTask.new('trace_nums')
+gem_helper = Bundler::GemHelper.new(Dir.pwd)
+gem_helper.install
+Rake::ExtensionTask.new('trace_nums19', gem_helper.gemspec)
 
 desc "Test everything."
-test_task = task :test => :lib do
+task :test => :compile do
   Rake::TestTask.new(:test) do |t|
     t.pattern = 'test/test-*.rb'
     t.verbose = true
   end
 end
 
-desc "Create the core ruby-debug shared library extension"
-task :lib do
-  Dir.chdir("ext") do
-    system("#{Gem.ruby} extconf.rb && make")
-  end
-end
-
-
-desc "Test everything - same as test."
-task :check => :test
-
-task :default => [:test]
-
 desc "Remove built files"
-task :clean => [:clobber_package, :clobber_rdoc] do
-  cd "ext" do
-    if File.exists?("Makefile")
-      sh "make clean"
-      rm  "Makefile"
-    end
-    derived_files = Dir.glob(".o") + Dir.glob("*.so")
-    rm derived_files unless derived_files.empty?
-  end
+task :clean do
+  rm "lib/trace_nums19.so" if File.exists?("lib/trace_nums19.so")
+  rm_rf "tmp" if File.exists?("tmp")
 end
 
+=begin
 desc "Generate rdoc documentation"
 task :rdoc do |rdoc|
   rdoc.rdoc_dir = 'doc'
@@ -54,3 +34,6 @@ task :rdoc do |rdoc|
                           'README',
                           'COPYING')
 end
+=end
+
+task :default => [:test]

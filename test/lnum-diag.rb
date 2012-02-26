@@ -20,11 +20,6 @@ def dump_file(file, opts)
     puts '=' * 80
     puts lines
   end
-  if opts[:print_parse]
-    puts '=' * 80
-    cmd = "#{File.join(TEST_DIR, 'parse-show.rb')} #{file}"
-    system(cmd)
-  end
   if opts[:print_trace]
     require 'tracer'
     puts '=' * 80
@@ -51,7 +46,7 @@ def dump_file(file, opts)
   if expected_lnums
     puts "expecting: #{expected_lnums.inspect}"
     puts '-' * 80
-    if expected_lnums 
+    if expected_lnums
       if got_lnums != expected_lnums
         puts "mismatch: #{got_lnums.inspect}"
       else
@@ -68,18 +63,15 @@ end
 require 'getoptlong'
 program = File.basename($0)
 opts = {
-  :print_source => true,  # Print source file? 
-  :print_trace  => true,  # Run Tracer over file? 
+  :print_source => true,  # Print source file?
+  :print_trace  => true,  # Run Tracer over file?
   :expect_line  => true,  # Source file has expected (correct) list of lines?
-  :print_parse  => true,  # Show ParseTree output?
 }
 
 getopts = GetoptLong.new(
                          [ '--expect',      '-e', GetoptLong::NO_ARGUMENT ],
                          [ '--no-expect',   '-E', GetoptLong::NO_ARGUMENT ],
                          [ '--help',        '-h', GetoptLong::NO_ARGUMENT ],
-                         [ '--parse',       '-p', GetoptLong::NO_ARGUMENT ],
-                         [ '--no-parse',    '-P', GetoptLong::NO_ARGUMENT ],
                          [ '--source',      '-s', GetoptLong::NO_ARGUMENT ],
                          [ '--no-source',   '-S', GetoptLong::NO_ARGUMENT ],
                          [ '--trace',       '-t', GetoptLong::NO_ARGUMENT ],
@@ -88,7 +80,7 @@ getopts = GetoptLong.new(
 getopts.each do |opt, arg|
   case opt
     when '--help'
-    puts "usage 
+    puts "usage
 Usage: #{$program} [options] file1 file2 ...
 
 Diagnostic program to make see what TraceLineNumbers does and compare
@@ -97,8 +89,6 @@ against other output.
 options:
     -e --expect      Read source file expected comment (default)
     -E --no-expect   Don't look for source file expected comment
-    -p --parse       Show ParseTree Output (default)
-    -P --no-parse    Don't show ParseTree output
     -s --source      Show source file (default)
     -S --no-source   Don't print source
     -t --trace       Show Tracer output (default)
@@ -108,10 +98,6 @@ options:
     opts[:expect_line] = true
   when '--no-expect'
     opts[:expect_line] = false
-  when '--parse'
-    opts[:print_parse] = true
-  when '--no-parse'
-    opts[:print_parse] = false
   when '--source'
     opts[:print_source] = true
   when '--no-source'
@@ -125,6 +111,6 @@ options:
   end
 end
 
-ARGV.each do |file| 
+ARGV.each do |file|
   dump_file(file, opts)
 end
